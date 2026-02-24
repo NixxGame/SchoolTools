@@ -33,16 +33,16 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
    - Create a key (name it anything)
    - Copy the key (starts with `sk-or-v1-`)
 
-3. Open `script.py` and paste your key:
+3. Open `API-Key.` and paste your key exactly as shown:
 
    ```python
-   OPENROUTER_API_KEY = "sk-or-v1-your-key-here"
+   OPENROUTER_API_KEY = "sk-or-v1-********"
    ```
 
 4. Run:
 
    ```bash
-   python script.py
+   python OCRQuizBot.py
    ```
 
 ## Usage
@@ -76,5 +76,6 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 MIT – free to modify and share.
 
 ```
+
 
 
