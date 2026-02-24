@@ -13,11 +13,27 @@ from openai import OpenAI
 #                 CONFIGURATION
 # ────────────────────────────────────────────────
 
+# Load API key from external file
+try:
+    with open("API-Key.txt", "r") as f:
+        OPENROUTER_API_KEY = f.read().strip()
+except FileNotFoundError:
+    messagebox.showerror("Missing File", "API-Key.txt not found in the same folder.")
+    exit()
+except Exception as e:
+    messagebox.showerror("Key Error", f"Could not read API-Key.txt:\n{e}")
+    exit()
+
+if not OPENROUTER_API_KEY:
+    messagebox.showerror("Empty Key", "API-Key.txt is empty. Paste your key inside it.")
+    exit()
+
+# Load models from models.txt
 try:
     with open("models.txt", "r") as f:
         FREE_MODELS = [line.strip() for line in f if line.strip()]
 except FileNotFoundError:
-    messagebox.showerror("Missing File", "models.txt not found in the same folder.\nPlease create it with one model per line.")
+    messagebox.showerror("Missing File", "models.txt not found in the same folder.\nCreate it with one model per line.")
     exit()
 except Exception as e:
     messagebox.showerror("File Error", f"Could not read models.txt:\n{e}")
@@ -26,8 +42,6 @@ except Exception as e:
 if not FREE_MODELS:
     messagebox.showerror("Empty File", "models.txt is empty.\nAdd at least one model (e.g. qwen/qwen-2.5-7b-instruct:free)")
     exit()
-
-OPENROUTER_API_KEY = "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"
 
 READER_LANGUAGES = ['en']
 
@@ -66,10 +80,6 @@ class QuizSolverApp:
             self.reader = easyocr.Reader(READER_LANGUAGES, gpu=False)
         except Exception as e:
             messagebox.showerror("EasyOCR Error", str(e))
-            root.destroy()
-            return
-        if not OPENROUTER_API_KEY.strip():
-            messagebox.showerror("Missing API Key", "Please set OPENROUTER_API_KEY in the script.")
             root.destroy()
             return
         self.ai_client = OpenAI(
