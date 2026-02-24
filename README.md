@@ -8,16 +8,30 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 ## Features
 
 - One-click screenshot capture
-- Fully local OCR (EasyOCR – no internet needed for extraction)
+- Fully local OCR ( EasyOCR )
 - AI answer generation with automatic model fallback
 - Modern, professional UI with real-time status and copy button
 - Handles messy OCR output intelligently
-- Works offline for OCR, online only for AI
 
 ## Requirements
 
-- Python 3.9+
-- Windows, macOS, or Linux
+- **Python 3.9 or higher** (any version from 3.9 to the latest is fine)  
+  Download from the official website:
+  ```
+  https://www.python.org/downloads/
+  ```
+
+  - Choose the latest stable release or any 3.9+ version
+  - Windows: Check "Add Python to PATH" during installation
+  - macOS/Linux: Usually comes with Python or install via package manager
+
+- Windows, macOS, or Linux operating system
+
+After installing Python, verify it works by opening Command Prompt / Terminal and typing:
+
+```bash
+python --version
+```
 
 ## Installation
 
@@ -77,6 +91,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 MIT – free to modify and share.
 
 ```
+
 
 
 
