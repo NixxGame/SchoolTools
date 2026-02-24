@@ -85,7 +85,6 @@ You should see something like `Python 3.12.3` (or 3.9+).
 
 MIT – free to modify and share.
 
-```
 
 
 
