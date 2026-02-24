@@ -42,6 +42,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 4. Run:
 
    ```bash
+   cd {project Path after extraction}
    python OCRQuizBot.py
    ```
 
@@ -76,6 +77,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 MIT – free to modify and share.
 
 ```
+
 
 
 
