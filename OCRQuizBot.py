@@ -1,7 +1,3 @@
-# Quiz Solver - Screenshot → Local OCR → Try Multiple Free AI Models → Get Answer
-# Requirements:
-#   pip install easyocr pyautogui pillow tkinter pyperclip opencv-python-headless numpy openai
-
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import pyautogui
@@ -17,17 +13,21 @@ from openai import OpenAI
 #                 CONFIGURATION
 # ────────────────────────────────────────────────
 
-OPENROUTER_API_KEY = "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"   # ← PASTE YOUR REAL OPENROUTER KEY HERE
+try:
+    with open("models.txt", "r") as f:
+        FREE_MODELS = [line.strip() for line in f if line.strip()]
+except FileNotFoundError:
+    messagebox.showerror("Missing File", "models.txt not found in the same folder.\nPlease create it with one model per line.")
+    exit()
+except Exception as e:
+    messagebox.showerror("File Error", f"Could not read models.txt:\n{e}")
+    exit()
 
-# List of free models to try (in order). Add/remove as you like.
-FREE_MODELS = [
-    "qwen/qwen-2.5-7b-instruct:free",                     # Usually very reliable
-    "meta-llama/llama-3.2-3b-instruct:free",              # Small & fast
-    "google/gemma-2-9b-it:free",                          # Good quality
-    "mistralai/mistral-nemo-instruct-2407:free",
-    "nousresearch/hermes-3-llama-3.1-405b:free",
-    "arcee-ai/trinity-large-preview:free"
-]
+if not FREE_MODELS:
+    messagebox.showerror("Empty File", "models.txt is empty.\nAdd at least one model (e.g. qwen/qwen-2.5-7b-instruct:free)")
+    exit()
+
+OPENROUTER_API_KEY = "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"
 
 READER_LANGUAGES = ['en']
 
@@ -59,35 +59,29 @@ class QuizSolverApp:
         self.root.title("OCR API Quiz Bot")
         self.root.geometry("820x750")
         self.root.resizable(False, False)
-
         self.running = False
         self.spin_chars = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
         self.spin_index = 0
-
         try:
             self.reader = easyocr.Reader(READER_LANGUAGES, gpu=False)
         except Exception as e:
             messagebox.showerror("EasyOCR Error", str(e))
             root.destroy()
             return
-
         if not OPENROUTER_API_KEY.strip():
             messagebox.showerror("Missing API Key", "Please set OPENROUTER_API_KEY in the script.")
             root.destroy()
             return
-
         self.ai_client = OpenAI(
             api_key=OPENROUTER_API_KEY,
             base_url="https://openrouter.ai/api/v1",
         )
-
         self.create_ui()
 
     def create_ui(self):
         pad = 16
         main = ttk.Frame(self.root, padding=pad)
         main.pack(fill=tk.BOTH, expand=True)
-
         self.btn = ttk.Button(
             main,
             text="Scan",
@@ -95,26 +89,20 @@ class QuizSolverApp:
             style="Big.TButton"
         )
         self.btn.pack(pady=(pad, 20), ipadx=50, ipady=18)
-
         self.status_var = tk.StringVar(value="Ready")
         self.status_label = ttk.Label(main, textvariable=self.status_var, font=("Segoe UI", 11, "bold"))
         self.status_label.pack(pady=(0, 6))
-
         self.spin_var = tk.StringVar(value="")
         self.spin_label = ttk.Label(main, textvariable=self.spin_var, font=("Consolas", 18), foreground="#555")
         self.spin_label.pack(pady=(0, 12))
-
         ttk.Label(main, text="Detected Raw OCR:", font=("Segoe UI", 10)).pack(anchor="w")
         self.raw_text = scrolledtext.ScrolledText(main, wrap=tk.WORD, font=("Consolas", 11), height=8, state="disabled", bg="#f8f9fa")
         self.raw_text.pack(fill=tk.X, pady=(4, 12))
-
         ttk.Label(main, text="Answer Field:", font=("Segoe UI", 10, "bold")).pack(anchor="w")
         self.answer_text = scrolledtext.ScrolledText(main, wrap=tk.WORD, font=("Consolas", 14, "bold"), height=6, state="disabled", bg="#e8f5e9")
         self.answer_text.pack(fill=tk.X, pady=(4, 8))
-
         self.copy_btn = ttk.Button(main, text="Copy Answer Field", command=self.copy_answer, state="disabled")
         self.copy_btn.pack(pady=8)
-
         style = ttk.Style()
         style.configure("Big.TButton", font=("Segoe UI", 13, "bold"))
 
@@ -129,8 +117,6 @@ class QuizSolverApp:
     def _process(self):
         self._update_status("Preparing...", "blue")
         time.sleep(0.4)
-
-        # Screenshot
         self._update_status("Capturing...", "dodgerblue")
         try:
             img_pil = pyautogui.screenshot()
@@ -140,11 +126,8 @@ class QuizSolverApp:
         except Exception as e:
             self._finish_error(f"Screenshot error:\n{e}")
             return
-
-        # OCR
         self._update_status("OCR in progress...", "purple")
         self._start_spinner()
-
         try:
             ocr_result = self.reader.readtext(img, detail=0, paragraph=True)
             raw_text = "\n".join(line.strip() for line in ocr_result if line.strip() and len(line.strip()) > 2)
@@ -152,14 +135,10 @@ class QuizSolverApp:
                 raw_text = "[No text detected]"
         except Exception as e:
             raw_text = f"OCR error:\n{str(e)}"
-
         self._set_text(self.raw_text, raw_text)
-
-        # Try AI models one by one
         self._update_status("Asking AI models...", "indigo")
-        ai_answer = "[All models failed]"
+        ai_answer = "[All models failed - check key & internet]"
         used_model = "None"
-
         for model in FREE_MODELS:
             self._update_status(f"Trying {model}...", "indigo")
             try:
@@ -172,23 +151,18 @@ class QuizSolverApp:
                 )
                 ai_answer = response.choices[0].message.content.strip()
                 used_model = model
-                break  # Success! Stop trying others
+                break
             except Exception as e:
                 ai_answer = f"Model {model} failed: {str(e)}"
-                # Continue to next model
-
         final_text = f"Used model: {used_model}\n\n{ai_answer}"
         self._finish(final_text)
 
     def _finish(self, text):
         self._stop_spinner()
         self._set_text(self.answer_text, text)
-
         color = "forestgreen" if "Cannot" not in text and "failed" not in text.lower() else "darkred"
         self._update_status("Done", color)
-
         self.copy_btn.state(["!disabled"] if text.strip() else ["disabled"])
-
         self.running = False
         self.btn.state(["!disabled"])
 
