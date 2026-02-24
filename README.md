@@ -67,7 +67,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 ## Troubleshooting
 
 - Missing API key popup → add your OpenRouter key
-- 404 model error → change model in `FREE_MODELS` list (see https://openrouter.ai/models?max_price=0)
+- 404 model error → change model in `models.txt` and include the models to use (see https://openrouter.ai/models?max_price=0)
 - 429 rate limit → wait a few minutes
 - Bad OCR → ensure text is large/sharp on screen
 
@@ -76,6 +76,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 MIT – free to modify and share.
 
 ```
+
 
 
 
