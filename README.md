@@ -20,69 +20,64 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
   ```
   https://www.python.org/downloads/
   ```
+  - Choose the latest stable release or any 3.9+ version  
+  - **Windows**: Check the box "Add Python to PATH" during installation  
+  - **macOS/Linux**: Usually pre-installed or install via package manager (brew, apt, etc.)
 
-  - Choose the latest stable release or any 3.9+ version
-  - Windows: Check "Add Python to PATH" during installation
-  - macOS/Linux: Usually comes with Python or install via package manager
-
-- Windows, macOS, or Linux operating system
-
-After installing Python, verify it works by opening Command Prompt / Terminal and typing:
+After installing, open `Command Prompt` / `Terminal` and verify:
 
 ```bash
 python --version
 ```
 
+You should see something like `Python 3.12.3` (or 3.9+).
+
 ## Installation
 
-1. Install dependencies:
+1. **Navigate to the project folder** in Command Prompt / Terminal  
+   - Press `Win + R` and type `cmd` then press Enter
+   - Use the `cd` command to change directory. Example:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-   
+     ```bash
+     cd C:\Users\Name\Downloads\SchoolTools-main\SchoolTools-main
+     ```
 
-2. Get a free OpenRouter API key:
-   - Go to https://openrouter.ai/keys
-   - Create a key (name it anything)
-   - Copy the key (starts with `sk-or-v1-`)
+     (Replace with your actual folder path or copy it from File Explorer address bar)
 
-3. Open `API-Key.` and paste your key exactly as shown:
+2. **Install dependencies**  
+   Run this single command inside the project folder:
 
-   ```python
-     sk-or-v1-********
-   ```
+     ```bash
+     pip install -r requirements.txt
+     ```
 
-4. Run:
+3. **Add your OpenRouter API key**  
+   - Go to:
+   ```https://openrouter.ai/keys```
+   - Create a new key (any name works)  
+   - Copy the key (starts with `sk-or-v1-`)  
+   - Open `API-Key.txt` in the project folder  
+   - Paste **only** the key (one line, no quotes, no extra text) then save
 
-   ```bash
-   cd {project Path after extraction}
-   python OCRQuizBot.py
-   ```
+4. **Run the application**  
+   In the same `Command Prompt` / `Terminal`, **make sure you're in the project folder** then run:
+
+     ```bash
+     python OCRQuizBot.py
+     ```
 
 ## Usage
 
 1. Open your quiz (e.g. Everfi)
-2. **Zoom in tightly** so **only the question + options** (or sort items) are visible
-   - F11 for full screen
-   - Ctrl + mouse wheel to zoom
-   - Hide tabs, bookmarks bar, sidebar
-3. Click **Capture & Solve**
-4. Wait 5–30 seconds
-5. See the AI's answer
-6. Click **Copy Answer** to paste it
-
-## Tips for Best Results
-
-- **Clean capture is key** – exclude browser UI, taskbar, icons
-- If OCR is messy → increase screen contrast or zoom more
-- Rate limit (429) → script auto-tries next model
-- Sort questions → AI usually groups correctly (Saving / Investing)
+2. Click `Capture & Solve`
+3. Wait 5–30 seconds
+4. See the AI's answer in the `Answer Field` box
+5. Click `Copy Answer` to paste it or select the correct answer
 
 ## Troubleshooting
 
 - Missing API key popup → add your OpenRouter key
-- 404 model error → change model in `models.txt` and include the models to use (see https://openrouter.ai/models?max_price=0)
+- 404 model error → change model in `models.txt` and include the models to use (see `https://openrouter.ai/models?max_price=0`)
 - 429 rate limit → wait a few minutes
 - Bad OCR → ensure text is large/sharp on screen
 
@@ -91,6 +86,7 @@ python --version
 MIT – free to modify and share.
 
 ```
+
 
 
 
