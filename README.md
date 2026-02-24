@@ -3,7 +3,7 @@
 
 A clean desktop tool that captures your screen, extracts quiz questions/options using local OCR, and automatically finds the correct answer using free AI models via OpenRouter.
 
-Supports both classic multiple-choice questions and sort/drag-and-drop style questions (like Everfi "Saving vs Investing").
+Supports both classic multiple-choice questions and sort/drag-and-drop style questions.
 
 ## Features
 
@@ -73,4 +73,5 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 ## License
 
 MIT – free to modify and share.
+
 ```
