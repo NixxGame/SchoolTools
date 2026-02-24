@@ -36,7 +36,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 3. Open `API-Key.` and paste your key exactly as shown:
 
    ```python
-   OPENROUTER_API_KEY = "sk-or-v1-********"
+     sk-or-v1-********
    ```
 
 4. Run:
@@ -76,6 +76,7 @@ Supports both classic multiple-choice questions and sort/drag-and-drop style que
 MIT – free to modify and share.
 
 ```
+
 
 
 
